@@ -1,4 +1,5 @@
 from datetime import datetime
+import threading
 
 from sqlalchemy import Column, String, DateTime
 
@@ -8,7 +9,6 @@ from bigorna.tasks import TaskDefinition, Status, task_status_changed_evt
 from bigorna.tracker.persistence import get_sessionmaker
 
 from .persistence import Base
-import threading
 
 
 class Job(Base):
@@ -73,7 +73,13 @@ class JobDao:
         return self.session.query(Job).filter_by(id=job_id).one_or_none()
 
     def get_all(self):
-        return self.session.query(Job).order_by(Job.last_update.desc()).all()
+        return self.session.query(Job).order_by(Job.submitted_at.desc(),
+                                                Job.last_update.desc()).all()
+
+    def get_not_finished(self):
+        return self.session.query(Job)\
+            .filter(Job.status != str(Status.FAILED))\
+            .filter(Job.status != str(Status.SUCCESS)).all()
 
 
 class JobTracker:
@@ -94,6 +100,14 @@ class JobTracker:
 
     def list_jobs(self):
         return self.dao.get_all()
+
+    def force_fail(self):
+        jobs = self.dao.get_not_finished()
+        count = len(jobs)
+        for job in jobs:
+            job.status = str(Status.FAILED)
+            self.dao.save(job)
+        return count
 
     def task_updated(self, evt: Event):
         if evt.evt_type != task_status_changed_evt:

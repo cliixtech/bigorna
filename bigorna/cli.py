@@ -5,6 +5,7 @@ import click
 from bigorna import __VERSION__
 from bigorna.commons import Config, setup_logging
 from bigorna.core import Bigorna, Standalone
+from bigorna.tracker import JobTracker
 
 
 pass_config = click.make_pass_decorator(Config)
@@ -27,18 +28,11 @@ def main(ctx, config, log):
 @main.command(help="Run http server")
 @pass_config
 def runserver(cfg):
+    # TODO config port
     from bigorna.http import app
     app.cfg = cfg
     app.bigorna = Bigorna.new(cfg)
     app.run(host="0.0.0.0", port=5555, debug=True)
-
-
-@main.command(help="Run http server")
-@pass_config
-def create_db(cfg):
-    click.secho("Creating db on file %s" % cfg.db_file, fg='green')
-    from bigorna.tracker.persistence import Base, create_engine
-    Base.metadata.create_all(create_engine(cfg))
 
 
 @main.command(help="""
@@ -72,3 +66,20 @@ def execute(cfg, task_type, params):
 
     success = bigorna.join()
     sys.exit(0 if success else 1)
+
+
+@main.command(help="Creates database file")
+@pass_config
+def create_db(cfg):
+    click.secho("Creating db on file %s" % cfg.db_file, fg='green')
+    from bigorna.tracker.persistence import Base, create_engine
+    Base.metadata.create_all(create_engine(cfg))
+
+
+@main.command(help="""Force mark all Running and Pending jobs as failed.
+This command should be used only in case of a crash, to put the db to a consistent state.""")
+@pass_config
+def force_fail(cfg):
+    tracker = JobTracker(cfg)
+    count = tracker.force_fail()
+    click.secho("%s jobs marked as failed!" % count, fg='red')
