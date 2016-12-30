@@ -2,6 +2,8 @@
 
 Bigorna is a simple job manager to submit tasks.
 
+[![CircleCI](https://circleci.com/gh/cliixtech/bigorna.svg?style=svg)](https://circleci.com/gh/cliixtech/bigorna)
+
 Tasks are simple commands with extra parameters, defined by a configuration file. It was built to
 be integrated with other tools (eg.: bots) to fire recurrent operation tasks,
 such as deployments and so on.
