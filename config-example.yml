@@ -1,0 +1,18 @@
+# relative to current dir
+# for absolute use '/'
+db_file: 'db.sqlite'
+
+# number of concurrent tasks to run
+concurrent_tasks: 1
+
+# interval between task status check seconds
+task_check_interval: 10
+
+# task output file pattern
+output_pattern: 'tasks/%s.output'
+
+tasks:
+  - name: 'list_files'
+    cmd: 'ls -la'
+  - name: 'list_dir'
+    cmd: 'ls {dir_name}'

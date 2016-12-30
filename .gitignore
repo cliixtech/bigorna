@@ -1,0 +1,12 @@
+.venv
+*.pyc
+*.egg-info
+*~
+.coverage
+config.yml
+coverage.xml
+nosetests.xml
+.project
+TODO
+mine.py
+data
