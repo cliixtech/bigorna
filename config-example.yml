@@ -1,6 +1,6 @@
 # relative to current dir
 # for absolute use '/'
-db_file: 'db.sqlite'
+db_file: 'data/db.sqlite'
 
 # number of concurrent tasks to run
 concurrent_tasks: 1
@@ -9,7 +9,7 @@ concurrent_tasks: 1
 task_check_interval: 10
 
 # task output file pattern
-output_pattern: 'tasks/%s.output'
+output_pattern: 'data/tasks/%s.output'
 
 tasks:
   - name: 'list_files'
