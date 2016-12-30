@@ -54,7 +54,6 @@ class Task:
         if not self.has_finished:
             self.process.poll()
             result_code = self.process.returncode
-            log.info("[%s] Process result %s", self.id, result_code)
             if result_code is not None:
                 if self.process.returncode == 0:
                     self._set_status(Status.SUCCESS)
@@ -125,7 +124,7 @@ class Executor:
             for task in tasks:
                 status = task._check_status()
                 if status:
-                    log.info("Task %s has finished, firing notification", task.id)
+                    log.info("Task %s has finished", task)
                     self._notify_change(task)
                 else:
                     self.running_tasks.append(task)

@@ -1,11 +1,17 @@
+from threading import Thread
+import time
 from unittest import TestCase
 from unittest.mock import create_autospec
 
 from nose.tools import istest
 
-from bigorna.core import Bigorna
+from bigorna.core import Bigorna, Standalone
 from bigorna.tasks import TaskFactory, TaskScheduler
+from bigorna.tasks.executor import Executor, Task
 from bigorna.tracker import JobTracker
+from bigorna.commons.event_bus import Event
+from bigorna.tasks.base import task_status_changed_evt
+
 
 cmd_type = 'ls'
 params = {'dirname': '/home', 'submitter': 'john'}
@@ -69,3 +75,43 @@ class BigornaTest(TestCase):
 
         self.tracker_mock.get_job.assert_called_once_with(job_id)
         self.assertEquals(job, self.tracker_mock.get_job.return_value)
+
+
+class StandaloneTest(TestCase):
+    def setUp(self):
+        self.factory_mock = create_autospec(TaskFactory)
+        self.executor_mock = create_autospec(Executor)
+        self.bigorna = Standalone(self.executor_mock, self.factory_mock)
+
+    @istest
+    def submit_calls_factory(self):
+        self.bigorna.submit(cmd_type, params)
+
+        self.factory_mock.create_task_definition(cmd_type, params)
+
+    @istest
+    def submit_calls_executor(self):
+        task_def = self.factory_mock.create_task_definition.return_value
+
+        self.bigorna.submit(cmd_type, params)
+
+        self.executor_mock.submit(task_def)
+
+    @istest
+    def join_waits_for_event_and_return_from_event(self):
+        class T(Thread):
+            def __init__(self, bigorna):
+                super(T, self).__init__(daemon=True)
+                self.bigorna = bigorna
+
+            def run(self):
+                time.sleep(0.5)
+                task_mock = create_autospec(Task)
+                task_mock.has_finished = True
+                task_mock.is_success = True
+                evt = Event(task_status_changed_evt, task_mock)
+                self.bigorna.task_changed(evt)
+        T(self.bigorna).start()
+        result = self.bigorna.join()
+
+        self.assertIs(result, True)
