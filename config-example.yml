@@ -8,6 +8,9 @@ concurrent_tasks: 1
 # interval between task status check seconds
 task_check_interval: 10
 
+# http server port
+http_port: 5555
+
 # task output file pattern
 output_pattern: 'data/tasks/%s.output'
 

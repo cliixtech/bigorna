@@ -28,11 +28,10 @@ def main(ctx, config, log):
 @main.command(help="Run http server")
 @pass_config
 def runserver(cfg):
-    # TODO config port
     from bigorna.http import app
     app.cfg = cfg
     app.bigorna = Bigorna.new(cfg)
-    app.run(host="0.0.0.0", port=5555, debug=True)
+    app.run(host="0.0.0.0", port=cfg.http_port, debug=True)
 
 
 @main.command(help="""

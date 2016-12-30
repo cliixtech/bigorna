@@ -46,6 +46,10 @@ class Config:
     def task_check_delay(self):
         return self._cfg.get('task_check_interval', 10)
 
+    @property
+    def http_port(self):
+        return self._cfg.get('http_port', 5555)
+
 
 def setup_logging(log_file):
     log = '%(asctime)s [%(levelname)s] %(module)s:%(lineno)d %(message)s'

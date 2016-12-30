@@ -104,6 +104,7 @@
           <label>Output Pattern:</label> {{ conf.output_pattern }}
           <label>Max Concurrent Tasks:</label> {{ conf.concurrent_tasks }}
           <label>Task Check Interval:</label> {{ conf.task_check_delay }}
+          <label>Http Server Port:</label> {{ conf.http_port }}
           <label>Tasks:</label> {% for task in conf.tasks %}
           <label class='sub'>Name:</label> {{ task.get('name') }}
           <label class='sub'>Command:</label> {{ task.get('cmd') }}
