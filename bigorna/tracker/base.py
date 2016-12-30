@@ -22,6 +22,22 @@ class Job(Base):
     output_file = Column(String)
 
     @property
+    def is_pending(self):
+        return self.status == str(Status.PENDING)
+
+    @property
+    def is_running(self):
+        return self.status == str(Status.RUNNING)
+
+    @property
+    def is_success(self):
+        return self.status == str(Status.SUCCESS)
+
+    @property
+    def is_failed(self):
+        return self.status == str(Status.FAILED)
+
+    @property
     def output_stream(self):
         return open(self.output_file, 'r')
 
@@ -57,7 +73,7 @@ class JobDao:
         return self.session.query(Job).filter_by(id=job_id).one_or_none()
 
     def get_all(self):
-        return self.session.query(Job).all()
+        return self.session.query(Job).order_by(Job.last_update.desc()).all()
 
 
 class JobTracker:

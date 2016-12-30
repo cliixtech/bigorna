@@ -2,7 +2,7 @@ import logging
 
 from flask import Blueprint, jsonify, send_file, Response, current_app, request
 
-api = Blueprint('bigorna_api', __name__)
+api = Blueprint('api', __name__)
 log = logging.getLogger(__name__)
 NOT_FOUND = Response(status=404)
 
