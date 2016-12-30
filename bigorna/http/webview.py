@@ -8,4 +8,6 @@ web = Blueprint('webview', __name__,
 
 @web.route('/')
 def index():
-    return render_template("index.html", jobs=current_app.bigorna.list_jobs())
+    return render_template("index.html",
+                           jobs=current_app.bigorna.list_jobs(),
+                           conf=current_app.cfg)

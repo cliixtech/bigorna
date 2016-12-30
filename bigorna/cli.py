@@ -28,6 +28,7 @@ def main(ctx, config, log):
 @pass_config
 def runserver(cfg):
     from bigorna.http import app
+    app.cfg = cfg
     app.bigorna = Bigorna.new(cfg)
     app.run(host="0.0.0.0", port=5555, debug=True)
 

@@ -14,5 +14,6 @@ output_pattern: 'data/tasks/%s.output'
 tasks:
   - name: 'list_files'
     cmd: 'ls -la'
+    base_dir: /home/
   - name: 'list_dir'
     cmd: 'ls {dir_name}'

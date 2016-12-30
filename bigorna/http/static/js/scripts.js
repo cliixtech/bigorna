@@ -1,4 +1,3 @@
-// Empty JS for your own code to be here
 var showOutput = function (url) {
     $.ajax({
         url: url,
@@ -7,4 +6,8 @@ var showOutput = function (url) {
           $('#outputContent').text(data);
           $('#outputModal').modal('show');
       });
+};
+
+var showConfig = function () {
+  $('#configModal').modal('show');
 };

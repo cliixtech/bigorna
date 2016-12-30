@@ -20,11 +20,17 @@
 <body>
   <div class="container-fluid">
     <div class="row">
-      <div class="page-header">
-        <h1>
-          Bigorna! <small>jobs tracker</small>
-        </h1>
+      <h1 class="brand">
+        Bigorna! <small>jobs tracker</small>
+      </h1>
+      <div class="floating-buttons">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-secondary"
+            onclick="showConfig();">Show Config</button>
+        </div>
+
       </div>
+
       <div class="col-md-12">
         <table class="table table-striped">
           <thead class="thead-inverse">
@@ -81,6 +87,33 @@
       </div>
     </div>
   </div>
+
+  <!-- config modal -->
+  <div id="configModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 id=class="modal-title">Configuration</h4>
+        </div>
+        <div class="modal-body">
+          <label>DB File:</label> {{ conf.db_file }}
+          <label>Output Pattern:</label> {{ conf.output_pattern }}
+          <label>Max Concurrent Tasks:</label> {{ conf.concurrent_tasks }}
+          <label>Task Check Interval:</label> {{ conf.task_check_delay }}
+          <label>Tasks:</label> {% for task in conf.tasks %}
+          <label class='sub'>Name:</label> {{ task.get('name') }}
+          <label class='sub'>Command:</label> {{ task.get('cmd') }}
+          {% if 'base_dir' in task %}<label class='sub'>Base dir:</label>{{ task.get('base_dir') }}{% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <script
     src="{{ url_for('webview.static', filename='js/jquery.min.js') }}"></script>
