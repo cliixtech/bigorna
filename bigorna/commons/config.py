@@ -1,5 +1,6 @@
 import yaml
 import os
+import logging
 
 
 class Config:
@@ -44,3 +45,11 @@ class Config:
     @property
     def task_check_delay(self):
         return self._cfg.get('task_check_interval', 10)
+
+
+def setup_logging(log_file):
+    log = '%(asctime)s [%(levelname)s] %(module)s:%(lineno)d %(message)s'
+    date = '%Y-%m-%dT%H:%M:%S'
+    level = logging.INFO
+
+    logging.basicConfig(filename=log_file, level=level, format=log, datefmt=date)

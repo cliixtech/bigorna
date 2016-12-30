@@ -3,7 +3,7 @@ import sys
 import click
 
 from bigorna import __VERSION__
-from bigorna.commons import Config
+from bigorna.commons import Config, setup_logging
 from bigorna.core import Bigorna, Standalone
 
 
@@ -12,26 +12,23 @@ pass_config = click.make_pass_decorator(Config)
 
 @click.group()
 @click.version_option(version=__VERSION__)
+@click.option('--log', default=None,
+              help="Log destination file path")
 @click.option('--config', default='config.yml', type=click.Path(),
               help="Configuration file path")
 @click.pass_context
-def main(ctx, config):
+def main(ctx, config, log):
     cfg = Config(config)
     click.secho("Loading configuration from file %s" % config, fg='green')
+    setup_logging(log)
     ctx.obj = cfg
 
 
 @main.command(help="Run http server")
 @pass_config
 def runserver(cfg):
-    import logging
-    from bigorna.core import Bigorna
     from bigorna.http import app
-
     app.bigorna = Bigorna.new(cfg)
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s:%(levelname)s:%(name)s:%(message)s",
-                        datefmt='%Y-%m-%dT%H:%M:%S')
     app.run(host="0.0.0.0", port=5555, debug=True)
 
 
