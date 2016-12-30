@@ -3,7 +3,7 @@
 Bigorna is a simple job manager to submit tasks.
 
 Tasks are simple commands with extra parameters, defined by a configuration file. It was built to
-be integrated with other tools (eg.: bots), to fire recurrent operation tasks,
+be integrated with other tools (eg.: bots) to fire recurrent operation tasks,
 such as deployments and so on.
 
 Bigorna takes care of executing the tasks, controlling how many tasks can run simultaneously
