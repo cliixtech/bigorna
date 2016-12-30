@@ -19,6 +19,13 @@
 </head>
 <body>
   <div class="container-fluid">
+    <div class="alert alert-danger fade in"
+      role="alert" style="display: none;">
+      <button type="button" class="close" onclick="$('.alert').hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      Output not available.
+    </div>
     <div class="row">
       <h1 class="brand">
         Bigorna! <small>jobs tracker</small>
@@ -28,9 +35,7 @@
           <button type="button" class="btn btn-secondary"
             onclick="showConfig();">Show Config</button>
         </div>
-
       </div>
-
       <div class="col-md-12">
         <table class="table table-striped">
           <thead class="thead-inverse">

@@ -1,6 +1,7 @@
 import logging
 
 from flask import Blueprint, jsonify, send_file, Response, current_app, request
+from os import path
 
 api = Blueprint('api', __name__)
 log = logging.getLogger(__name__)
@@ -39,7 +40,7 @@ def get_job(job_id):
 def job_output(job_id):
     log.info('Get job output request: %s', job_id)
     job = current_app.bigorna.get_job(job_id)
-    if job:
+    if job and path.isfile(job.output_file):
         resp = send_file(job.output_file, as_attachment=False)
     else:
         resp = NOT_FOUND

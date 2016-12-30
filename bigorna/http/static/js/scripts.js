@@ -5,6 +5,8 @@ var showOutput = function (url) {
       }).done(function(data) {
           $('#outputContent').text(data);
           $('#outputModal').modal('show');
+      }).fail(function() {
+          $('.alert').show()
       });
 };
 
