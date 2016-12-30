@@ -27,5 +27,6 @@ def heartbeat():
 
 @app.template_filter('datefmt')
 def _jinja2_filter_datetime(date):
-    format = '%d/%m/%y %H:%M:%S'
-    return date.strftime(format)
+    if date:
+        fmt = '%d/%m/%y %H:%M:%S'
+        return date.strftime(fmt)
