@@ -31,3 +31,9 @@ label {
 .brand .small {
 	font-size: 14px;
 }
+
+.version {
+	padding: 15px;
+	float: left;
+	font-size: 12px;
+}
