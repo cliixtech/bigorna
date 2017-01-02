@@ -37,7 +37,6 @@ setup(
     ],
     keywords='bigorna job tracker scheduler sysadmin',
     packages=find_packages(exclude=['tests']),
-    package_data={'references': ['README.md', 'config-example.yml']},
     test_suite='nose.collector',
     tests_require=get_requirements('dev_requirements.txt'),
     install_requires=get_requirements('requirements.txt'),
