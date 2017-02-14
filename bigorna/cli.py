@@ -26,12 +26,14 @@ def main(ctx, config, log):
 
 
 @main.command(help="Run http server")
+@click.option('--debug', is_flag=True,
+              help="Run server on debug mode")
 @pass_config
-def runserver(cfg):
+def runserver(cfg, debug):
     from bigorna.http import app
     app.cfg = cfg
     app.bigorna = Bigorna.new(cfg)
-    app.run(host="0.0.0.0", port=cfg.http_port, debug=True)
+    app.run(host="0.0.0.0", port=cfg.http_port, debug=debug)
 
 
 @main.command(help="""
