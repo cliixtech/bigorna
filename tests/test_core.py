@@ -11,6 +11,7 @@ from bigorna.tasks.executor import Executor, Task
 from bigorna.tracker import JobTracker
 from bigorna.commons.event_bus import Event
 from bigorna.tasks.base import task_status_changed_evt
+from bigorna.cron.base import CronTab
 
 
 cmd_type = 'ls'
@@ -24,7 +25,9 @@ class BigornaTest(TestCase):
         self.tracker_mock = create_autospec(JobTracker)
         self.sched_mock = create_autospec(TaskScheduler)
         self.factory_mock = create_autospec(TaskFactory)
-        self.bigorna = Bigorna(output_tpl, self.tracker_mock, self.sched_mock, self.factory_mock)
+        self.cron_mock = create_autospec(CronTab)
+        self.bigorna = Bigorna(output_tpl, self.tracker_mock, self.sched_mock,
+                               self.factory_mock, self.cron_mock)
 
     @istest
     def submit_calls_factory(self):

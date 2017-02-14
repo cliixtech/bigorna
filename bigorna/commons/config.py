@@ -50,6 +50,10 @@ class Config:
     def http_port(self):
         return self._cfg.get('http_port', 5555)
 
+    @property
+    def schedule(self):
+        return self._cfg.get('schedule', [])
+
 
 def setup_logging(log_file):
     log = '%(asctime)s [%(levelname)s] %(module)s:%(lineno)d %(message)s'

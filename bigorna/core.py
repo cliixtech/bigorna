@@ -1,9 +1,11 @@
-from bigorna.commons import Config
-from bigorna.tasks import TaskScheduler, TaskFactory, task_status_changed_evt
-from bigorna.tracker import JobTracker, Job
-from bigorna.tasks.executor import Executor
 from threading import Barrier
+
+from bigorna.commons import Config
 from bigorna.commons.event_bus import bus, Event
+from bigorna.cron import CronTab
+from bigorna.tasks import TaskScheduler, TaskFactory, task_status_changed_evt
+from bigorna.tasks.executor import Executor
+from bigorna.tracker import JobTracker, Job
 
 
 class NotInitializedError(Exception):
@@ -11,11 +13,15 @@ class NotInitializedError(Exception):
 
 
 class Bigorna:
-    def __init__(self, output_tpl, tracker: JobTracker, sched: TaskScheduler, factory: TaskFactory):
+    def __init__(self, output_tpl, tracker: JobTracker, sched: TaskScheduler,
+                 factory: TaskFactory, crontab: CronTab):
         self.output = output_tpl
         self._tracker = tracker
         self._sched = sched
         self._task_factory = factory
+        self.crontab = crontab
+        self.crontab.bigorna = self
+        self.crontab.start()
 
     def submit(self, task_type, params) -> Job:
         task_def = self._task_factory.create_task_definition(task_type, params, self.output)
@@ -34,7 +40,8 @@ class Bigorna:
         tracker = JobTracker(cfg)
         sched = TaskScheduler(cfg)
         factory = TaskFactory(cfg)
-        return Bigorna(cfg.output_pattern, tracker, sched, factory)
+        crontab = CronTab(cfg)
+        return Bigorna(cfg.output_pattern, tracker, sched, factory, crontab)
 
 
 class Standalone:
