@@ -20,3 +20,15 @@ tasks:
     base_dir: /home/
   - name: 'list_dir'
     cmd: 'ls {dir_name}'
+
+schedule:
+  - name: list files every 1 minute
+    when:
+      - every 1 minute
+    task: list_files
+  - name: list files once a week
+    when:
+      - every tuesday at 17:35
+    task: list_dir
+    params:
+      dir_name: '/tmp'

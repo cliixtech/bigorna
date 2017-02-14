@@ -116,6 +116,15 @@
           <label class='sub'>Command:</label> {{ task.get('cmd') }}
           {% if 'base_dir' in task %}<label class='sub'>Base dir:</label>{{ task.get('base_dir') }}{% endif %}
           {% endfor %}
+          <label>Cron Jobs:</label> {% for cron in conf.schedule %}
+          <label class='sub'>Name:</label> {{ cron.get('name') }}
+          <label class='sub'>Task:</label> {{ cron.get('task') }}
+          <label class='sub'>Params:</label> {{ cron.get('params') }}
+          <label class='sub'>When:</label> {% for time in cron.get('when') %}
+          <label class='sub'> - </label>{{ time }}
+          {% endfor %}
+          {% endfor %}
+          
         </div>
       </div>
     </div>
