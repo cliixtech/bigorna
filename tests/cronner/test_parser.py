@@ -13,15 +13,13 @@ class CronParserTest(TestCase):
         self.func_mock = Mock()
         data = [{'name': '1',
                  'when': [
-                     'every 5 minutes'
-                     ],
+                     'every 5 minutes'],
                  'task': 'a',
                  'params': {'a': 1, 'b': 2}},
                 {'name': '2',
                  'when': [
                      'every monday at 10:00',
-                     'every friday at 10:00'
-                     ],
+                     'every friday at 10:00'],
                  'task': 'a'
                  }]
         self.parser = ScheduleParser(self.scheduler, data, self.func_mock)
