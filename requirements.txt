@@ -1,5 +1,5 @@
 click==6.6
-Flask==0.12
+Flask==1.0
 PyYaml==3.12
 schedule==0.4.2
 SQLAlchemy==1.1.4
